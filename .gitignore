@@ -1,0 +1,9 @@
+envlake/__pycache__/
+envlake/Include/
+envlake/Lib/
+envlake/Scripts/
+envlake/share/
+
+*.pyc
+*.bak
+*.swp
