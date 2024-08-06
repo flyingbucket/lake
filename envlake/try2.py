@@ -3,6 +3,7 @@ import numpy as np
 from tqdm import trange
 import pickle
 import pandas as pd
+import json
 from lake import get_f
 '''
 问题：目前程序受随机数影响很大，是有bug的。
@@ -160,13 +161,14 @@ def GA(init_pop,ngen,mut_prob,k):
     return pop
 
 if __name__ == '__main__':
-    popsize=100
     ngen=10
     mut_prob=0.1
     k=15
-
-    # 使用随即种群测试代码
-    init_pop=make_pop_random(popsize)
+    # # 使用随即种群测试代码
+    # popsize=10
+    # init_pop=make_pop_random(popsize)
+    with open('data.json', 'r') as file:
+        init_pop = json.load(file)
     pop=GA(init_pop,ngen,mut_prob,k)
     id=pop[0].get_id()
     fitness=pop[0].get_fitness()

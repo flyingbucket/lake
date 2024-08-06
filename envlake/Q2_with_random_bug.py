@@ -3,6 +3,7 @@ import random
 from tqdm import trange
 import pickle
 import pandas as pd
+import json
 from lake import get_f
 '''
 问题：目前程序受随机数影响很大，是有bug的。
@@ -163,12 +164,20 @@ if __name__ == '__main__':
     ngen=10
     mut_prob=0.1
     k=15
+    with open('data.json', 'r') as file:
+        json_str = file.read()
 
+    # 将JSON字符串转换为二维列表
+    init_pop = json.loads(json_str)
     # 使用随即种群测试代码
     init_pop=make_pop_random(popsize)
     pop=GA(init_pop,ngen,mut_prob,k)
     id=pop[0].get_id()
     fitness=pop[0].get_fitness()
+    test=0
+    for i in range(1,len(pop)):
+        test+=pop[i].get_id()
+    print(test)
     print(f'最佳个体id:{id},三点残差和:{fitness}')
     print(f"最佳个体:{pop[0]}")
     # 保存插值函数
