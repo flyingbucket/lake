@@ -30,6 +30,15 @@ class Individual(object):
     def get_interpolator(self):
         return self.interpolator
 
+    # def __len__(self):
+    #     return len(self.genes)
+    
+    # def __getitem__(self, index):
+    #     return self.genes[index]
+    
+    # def __setitem__(self, index, value):
+    #     self.genes[index] = value
+
     def __repr__(self):
         return str(self.genes)
 
@@ -132,6 +141,28 @@ def mutate(individual, mut_prob):
         return individual  # 回滚变异
     else:
         return individual  # 变异成功
+
+# def mutate(ind,prob):
+#     '''变异:随机选择一个0元素和一个1元素进行交换'''
+#     if random.random()<=prob:
+#         zero_loc=[] # 0元素位置
+#         for i in range(len(ind)):
+#             if ind[i]==0:
+#                 zero_loc.append(i)
+#         if len(zero_loc)!=3:
+#             raise ValueError(f'个体中有{len(zero_loc)}个0元素,需要3个')
+#         ones_loc=list(set(range(len(ind)))-set(zero_loc)) # 1元素位置
+#         k=random.choice(ones_loc)
+#         j=random.choice(zero_loc)
+#         ind[k],ind[j]=ind[j],ind[k]
+#         new_ind=ind
+#         new_ind.id=ind.id
+#         evaluate(new_ind)
+#         return new_ind
+#     else:
+#         return ind
+
+
 
 def GA(init_pop, ngen, mut_prob, k):
     for individual in init_pop:
