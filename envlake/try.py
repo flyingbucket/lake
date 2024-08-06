@@ -102,20 +102,23 @@ import pandas as pd
 # z=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
 # print(sum(z))
 
-from Q2_with_random_bug import Individual
-a=[1,2,3]
-b=[4,5,6]
-c=[7,8,9]
-A,B,C=Individual(a),Individual(b),Individual(c)
-A.id=1
-B.id=2
-C.id=3
-print(A.id)
-print(B.id)
-print(C.id)
-D=[A,B,C]
-for i in range(len(D)):
-    D[i].id=2*(i+1)
-print(D[0].id)
-print(D[1].id)
-print(D[2].id)
+import numpy as np
+
+# 假设 circle_properties 列表已经存在
+circle_properties = [
+    {'center': (1, 2), 'tension': 10},
+    {'center': (3, 4), 'tension': 20},
+    # 其他圆的信息
+]
+
+# 从 circle_properties 列表中提取所有圆的 tenssion 值
+tensions = [circle['tension'] for circle in circle_properties]
+print(type(tensions[0]))
+# 找出 tenssion 值最大的五个圆的索引
+top_5_indices = np.argsort(tensions)[-5:]
+
+# 打印这些圆的中心坐标和 tenssion 值
+for idx in top_5_indices:
+    center = circle_properties[idx]['center']
+    tension = circle_properties[idx]['tension']
+    #print(f"Circle {idx}: Center = {center}, Tension = {tension:.2f}")
