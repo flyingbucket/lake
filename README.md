@@ -1,4 +1,5 @@
 # Lake Modeling Project
+PS.此readme文档由copilot自动生成
 
 本项目旨在通过数据拟合和凸包算法对湖泊底面进行建模和分析。
 
