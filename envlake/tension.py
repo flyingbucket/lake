@@ -42,8 +42,8 @@ def is_circle_valid(center, radius, delaunay):
     return np.sum(inside_points) >= len(angles)/3  # 大于 1/3 的点在凸包内
 
 # 生成网格点
-grid_x1 = np.linspace(min_x, max_x, 10)
-grid_y1 = np.linspace(min_y, max_y, 10)
+grid_x1 = np.linspace(min_x, max_x, 15)
+grid_y1 = np.linspace(min_y, max_y, 15)
 grid_points = np.array(np.meshgrid(grid_x1, grid_y1)).T.reshape(-1, 2)
 
 # 过滤有效的圆心
@@ -68,7 +68,7 @@ all_centers = valid_centers + boundary_centers[:20]
 
 '''-----遍历圆并测出圆内湖深变化剧烈程度-----'''
 # 加载插值函数
-with open(r'D:\mypython\math_modeling\lake\result\res_func0.pkl', 'rb') as f:
+with open(r'D:\mypython\math_modeling\lake\result\res_func_best.pkl', 'rb') as f:
     interpolator = pickle.load(f)
 
 # 计算每个圆的 tension
@@ -76,9 +76,9 @@ circle_properties =[]
 for center in all_centers:
     # 生成圆上的点
     angles = np.random.uniform(0, 2 * np.pi, 100)
-    # radii = np.sqrt(np.random.uniform(0, 1, 10)) * radius*2
-    circle_points = np.array([center[0] + radius * np.cos(angles),
-                               center[1] + radius * np.sin(angles)]).T
+    radii = np.sqrt(np.random.uniform(0, 1, 100)) * radius
+    circle_points = np.array([center[0] + radii * np.cos(angles),
+                               center[1] + radii * np.sin(angles)]).T
     
     # 过滤在凸包内的点
     valid_points = [point for point in circle_points if delaunay.find_simplex(point) >= 0]
@@ -91,10 +91,10 @@ for center in all_centers:
 tensions = [circle['tension'] for circle in circle_properties]
 print(len(circle_properties))
 # 找出 tenssion 值最大的五个圆的索引
-top_5_indices = np.argsort(tensions)[-5:]
+top_10_indices = np.argsort(tensions)[-10:]
 
 # 打印这些圆的中心坐标和 tenssion 值
-for idx in top_5_indices:
+for idx in reversed(top_10_indices):
     center = circle_properties[idx]['center']
     tension = circle_properties[idx]['tension']
     print(f"Circle {idx}: Center = ({center[0]:.2f},{center[1]:.2f}) Tension = {tension:.2f}")
@@ -114,10 +114,6 @@ points1=np.hstack((x,y))
 # 绘制散点图，使用 tension 值作为颜色映射
 plt.scatter(x, y, c=tensions, cmap='YlOrBr', edgecolor='k')
 
-# 标出 top_5_indices 中的五个圆
-for idx in top_5_indices:
-    plt.scatter(circle_properties[idx]['center'][0], circle_properties[idx]['center'][1], 
-                color='red', edgecolor='black', s=100, label=f'Circle {idx}')
     
 grid_x1, grid_y1 = np.meshgrid(np.linspace(min_x, max_x, 100), np.linspace(min_y, max_y, 100))
 grid_points = np.vstack((grid_x1.ravel(), grid_y1.ravel())).T
@@ -154,6 +150,13 @@ plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('Convex Hull with Tension Gradient')
 plt.gca().set_aspect('equal', adjustable='box')
+
+# 标出 top_10_indices 中的七个圆
+# 注释掉这段代码，即得tension.png,否则得tension with mark.png
+for idx in top_10_indices:
+    circle = plt.Circle((circle_properties[idx]['center'][0], circle_properties[idx]['center'][1]), 
+                        radius=radius, color='red', fill=False, edgecolor='black', linewidth=2)
+    plt.gca().add_patch(circle)
 
 # 显示图形
 plt.show()
