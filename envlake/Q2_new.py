@@ -1,7 +1,8 @@
 import random
 import numpy as np
+import pandas as pd  
 from tqdm import trange
-import pandas as pd  # 导入pandas库用于处理Excel文件
+import pickle
 from scipy.interpolate import CloughTocher2DInterpolator
 
 
@@ -160,4 +161,9 @@ if __name__ == '__main__':
     best_individual_id = population[0].get_id()
     best_fitness = population[0].get_fitness()
     print(f'最佳个体id: {best_individual_id}, 三点残差和: {best_fitness}')
+    res_func = population[0].get_interpolator()
+    # 保存插值函数
+    with open(rf'D:\mypython\math_modeling\lake\result\res_func_best.pkl', 'wb') as file:
+        pickle.dump(res_func, file)
+    print(f'已将最佳插值函数保存到res_func_best.pkl')
     print(f"最佳个体: {population[0]}")
